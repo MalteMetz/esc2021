@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>ESC 2021 Presentation</title>
+
+    <link rel="stylesheet" href="reveal/dist/reset.css">
+    <link rel="stylesheet" href="reveal/dist/reveal.css">
+    <link rel="stylesheet" href="theme/pyrocko.css" id="theme">
+    <!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="theme/highlight/gruvbox-light.css" id="highlight-theme">
+</head>
+<style>
+    .annot {
+        font-style: italic;
+        color: #ce5c00;
+        padding-left: 1em;
+    }
+
+    .links {
+        border-top: 1px solid #665544;
+        padding-top: 0.5em;
+        font-size: 70%;
+        color: #aaaa88;
+        margin-top: 2em;
+        width: 100%;
+    }
+
+    .links li {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 1em;
+    }
+
+    .links a {
+        color: #aaaa88;
+    }
+
+    .editor {
+        margin: 1em;
+        border: 1px solid #665544;
+        border-radius: 0.2em;
+        background-color: #333322;
+    }
+
+    code.inline {
+        font-size: 80%;
+        background-color: #444435;
+        color: #ccccaa;
+    }
+
+    em {
+        /*color: #ccaa33;*/
+    }
+
+    .small {
+        font-size: 75%;
+    }
+
+    div.fbox {
+        display: flex;
+        vertical-align: top;
+        justify-content: space-evenly;
+    }
+
+    div.fitem {
+        flex-grow: 1;
+    }
+
+    div.left {
+      left:-8.33%;
+      text-align: center;
+      float: left;
+      width:50%;
+      z-index:-10;
+    }
+
+    div.right {
+      left:31.25%;
+      top: 75px;
+      float: right;
+      text-align: center;
+      z-index:-10;
+      width:50%;
+    }
+</style>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <section>
+                    <h3>Automatic schemes of extended seismic source inversions for tsunami early warning</h3>
+                    <p style="font-size:50%">Malte Metz, Torsten Dahm, Simone Cesca, Rongjiang Wang, Sebastian Heimann, Marius Isken, Jacopo Selva, Alexander Garcia, Matteo Taroni</p>
+
+                    <img src="./figures/esc_logo.png" style="height: 3em">
+ 
+                    <p style="font-size: 35%">Link to presentation: <a href="https://maltemetz.github.io/esc2021/">maltemetz.github.io/esc2021/</a></p>
+                </section>
+            </section>
+
+            <section data-auto-animate>
+                <h6>Motivation</h6>
+                
+                <img src="./figures/overview_map.png" style="height: 10em">
+
+                <p style="font-size: 75%">Faults - EDSF13 <em>(Basili et al., 2013)</em>,<br>Seismicity - RCMT <em>(Pondrelli, 2002)</em></p>
+            </section>
+
+            <section data-auto-animate>
+                <h6>Motivation - 2020 M\(_w\) 7.0 Samos</h6>
+                
+                <img src="./figures/samos_map.png" style="height: 10em">
+            </section>
+
+            <section data-auto-animate>
+                <h6>Motivation - 2020 M\(_w\) 7.0 Samos</h6>
+                
+                <img src="./figures/samos_map.png" style="height: 4.2em">
+                <img src="./figures/dogan2021_fig2.png" style="height: 3.5em">
+                <p style="font-size: 50%; text-align: right"><em>Dogan et al., 2021</em></p>
+            </section>
+
+
+            <section data-auto-animate>
+                <p style="font-weight: bold;">Increase speed and reliability of fast seismic source estimates for TEW</p>
+
+                <aside class="notes">
+                    Show necessity for fast extended source characterization (speed vs complexity) - but within reasonable amount of after earthquake
+                    Perhaps vertical surface displacement for  MT inv result vs input PDR - differences?
+                    Goal of EWRICA - Early-Warning and Rapid ImpaCt Assessment with real-time GNSS in the Mediterranean
+                </aside>
+            </section>
+
+            <section data-auto-animate>
+                <p style="font-weight: bold;">Increase speed and reliability of fast seismic source estimates for TEW</p>
+
+                <ul style="font-size: 80%;">
+                    <li>Method I: IDS - Fast iterative deconvolution and stacking to estimate kinematic slip distribution<br><em class="small">Zhang and Wang, 2014; 2015</em></li>
+                </ul>
+            </section>
+
+            <section data-auto-animate>
+                <p style="font-weight: bold;">Increase speed and reliability of fast seismic source estimates for TEW</p>
+
+                <ul style="font-size: 80%;">
+                    <li>Method I: IDS - Fast iterative deconvolution and stacking to estimate kinematic slip distribution<br><em class="small">Zhang and Wang, 2014; 2015</em></li>
+                    <li>Method II: Self similar dynamic rupture model with few parameters<br><em class="small">Dahm et al., 2021</em></li>
+            </section>
+
+            <section data-auto-animate>
+                <p style="font-weight: bold;">Increase speed and reliability of fast seismic source estimates for TEW</p>
+
+                <ul style="font-size: 80%;">
+                    <li>Method I: IDS - Fast iterative deconvolution and stacking to estimate kinematic slip distribution<br><em class="small">Zhang and Wang, 2014; 2015</em></li>
+                    <li>Method II: Self similar dynamic rupture model with few parameters<br><em class="small">Dahm et al., 2021</em></li>
+                    <li>Implement a priori information to narrow search space</li>
+                </ul>
+            </section>
+
+            <section data-auto-animate>
+                <p style="font-weight: bold;">Increase speed and reliability of fast seismic source estimates for TEW</p>
+
+                <ul style="font-size: 80%;">
+                    <li style="color: lightgray;">
+                        Method I: IDS - Fast iterative deconvolution and stacking to estimate kinematic slip distribution<br><em class="small">Zhang and Wang, 2014; 2015</em></li>
+                    <li>Method II: Self similar dynamic rupture model with few parameters<br><em class="small">Dahm et al., 2021</em></li>
+                    <li>Implement a priori information to narrow search space</li>
+                </ul>
+
+                <aside class="notes">Put main focus on PDR, not IDS</aside>
+            </section>
+
+<!-- METHODS -->
+            <section>
+                <h6>Workflow - Fast self-similar source estimate</h6>
+
+                <div class="r-stack">
+                    <img class="fragment current-visible" src="figures/methods/flow_fast_pdr0.png" style="height: 14em;">
+                    <img class="fragment current-visible" src="figures/methods/flow_fast_pdr1.png" style="height: 14em;">
+                    <img class="fragment current-visible" src="figures/methods/flow_fast_pdr2.png" style="height: 14em;">
+                    <img class="fragment current-visible" src="figures/methods/flow_fast_pdr3.png" style="height: 14em;">
+                    <img class="fragment" src="figures/methods/flow_fast_pdr.png" style="height: 14em;"/>
+                </div>
+
+                <aside class="notes">Put main focus on PDR, not IDS, emphasize choice of r (half Blaser length from centroid) and prior, NEAMTHM - NE Atlantic Mediterranean Tsunami Hazard Model</aside>
+            </section>
+
+<!-- PRIOR CHOICES -->
+            <!-- <section>
+                <h6>Choice of priors</h6>
+            </section>
+
+            <section>
+                <h6>Choice of priors - Faults</h6>
+                <p style="font-size: 75%">\(r = 0.5 \cdot length(M_w)\) with length defined by Blaser, et al. (2010)</p>
+            </section> -->
+
+            <!-- <section data-auto-animate>
+                <h6>Choice of priors - NEAMTHM18</h6>
+
+                <img src="./figures/overview_map.png" style="height: 8em">
+            </section> -->
+
+            <!-- <section data-auto-animate>
+                <h6>Choice of priors - NEAMTHM18</h6>
+                <img src="./figures/tsumaps_grid.png" style="height: 8em">
+
+                <p style="font-size: 75%">144 discrete strike-dip-rake combinations with assigned probabilities for > 13000 nodes</p>
+            </section>
+
+            <section data-auto-animate>
+                <h6>Choice of priors - NEAMTHM18</h6>
+                <img src="./figures/map_grid_cumprob_n_7.png" style="height: 8em">
+
+                <aside class="notes">Represent cumulative probability of about 65 %</aside>
+            </section>
+
+            <section data-auto-animate>
+                <h6>Choice of priors - NEAMTHM18</h6>
+                <img src="./figures/map_grid_cumprob_n_7.png" style="height: 5.5em">
+                <img src="./figures/overview_map.png" style="height: 5.5em">
+
+                <p style="font-size: 75%">Blue nodes indicate high cumulative probability using only few scenarios<br><span class="fragment fade-in annot"> ➞ 7 scenarios used as prior (represent > 65% probability in  active seismic zones) </span></p>
+            </section> -->
+
+            <!-- <section data-auto-animate>
+                <h6>Choice of priors - NEAMTHM18</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>Cumulative Probability</td>
+                                        <td>Cum. Prob. Difference</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_cumprob_above_mean.png"></td>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_probgrad_above_mean.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                <p style="font-size: 75%">Statistics on subset of nodes (as indicated in previous slide) <span class="fragment fade-in annot"> ➞ 7 scenarios with highest probability</span></p>
+            </section> -->
+
+
+<!-- CASE STUDY SYNTHETIC TESTS -->
+            <section>
+                <h6>Case study - 2020 M\(_w\) 7.0 Samos</h6>
+            </section>
+
+            <section>
+                <h6>2020 M\(_w\) 7.0 Samos - Stations and Faults</h6>
+                <img src="./figures/stationmap_plain.png" style="height: 12em">
+
+                <p style="font-size: 50%; font-style: italic;">MT from GEOFON; Faults from EDSF13; Stations from AFAD, KOERI, HL, NOA</p>
+                <aside class="notes">TODO Anzahl Faults in Circle</aside>
+            </section>
+
+<!-- CONSISTENCY CHECK -->
+            <section data-auto-animate>
+                <!-- <h6>Synthetic validation - including input model</h6> -->
+                <h6>Synthetic validation</h6>
+
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th>Input</th>
+                                <th>Result adding 10% noise</th>
+                            </tr></thead>
+                            <tbody>
+                                <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 7em;"src="./figures/test1/map_input.png"></td>
+                                <!-- <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 7em;"src="./figures/test1/map_ensemble_best_0.1.png"></td> -->
+                                <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 7em;"src="./figures/test1_+bb_-mt/map_ensemble_best_0.1.png"></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <p style="font-size: 75%"><span class="annot"> ➞ Model procedure works</span></p>
+                <aside class="notes">Use best case with 10% noise (+BB?) </aside>
+            </section>
+
+            <section data-auto-animate>
+                <!-- <h6>Synthetic validation - including input model</h6> -->
+                <h6>Synthetic validation</h6>
+
+                <img src="./figures/stationmap_subset.png" style="height: 10em">
+            </section>
+
+            <section data-auto-animate>
+                <!-- <h6>Synthetic validation - including input model</h6> -->
+                <h6>Synthetic validation</h6>
+                <div style="float: left; vertical-align: middle;"><img src="./figures/stationmap_subset.png" style="height: 4.5em; margin-top: 2em;"></div>
+
+                <div class="fbox" style="vertical-align: top; width: 80%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>0918 <span style="font-size: 50%">(SM)</span></th>
+                                <th>BUHA <span style="font-size: 50%">(BB)</span></th>
+                            </tr></thead>
+                            <!-- <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">Z</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.p_Z_2_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.pacc_Z_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">R</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.p_R_2_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.pacc_R_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                            </tbody> -->
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">Z</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_Z_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">R</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_R_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+<!-- REAL DATA BEST CASE WIP -->
+            <section data-auto-animate>
+                <h6>Real data application</h6>
+
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                    <div class="fitem">
+                        <table>
+                             <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Result<br>fast estimate</th>
+                                    <th>Result<br>full inversion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><img style="height: 7em; width: 12em" src="./figures/test_real_+bb/map_crust2_c4_1Hz_+bb.png"></td>
+                                    <td><img style="height: 7em; width: 12em" src="./figures/test_real_+bb/map_crust2_c4inversion.png"></td></tr>
+                                <tr>
+                                    <td>Run time</td>
+                                    <td>80 min</td>
+                                    <td>1087 min \(\approx\) 18 h</td>
+                                </tr>
+                                <tr>
+                                    <td># models tested</td>
+                                    <td>2236</td>
+                                    <td>30000</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+<!--             <section data-auto-animate>
+                <h6>Application</h6>
+
+                <img src="./figures/stationmap_subset.png" style="height: 10em">
+            </section>
+ -->
+            <section data-auto-animate>
+                <h6>Real data application</h6>
+                <div style="float: left; vertical-align: middle;"><img src="./figures/stationmap_subset.png" style="height: 4.5em; margin-top: 2em;"></div>
+
+                <div class="fbox" style="vertical-align: top; width: 80%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>0918 <span style="font-size: 50%">(SM)</span></th>
+                                <th>BUHA <span style="font-size: 50%">(BB)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">Z</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pgnssz_Z_0_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pacc_Z_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">R</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pgnssr_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pacc_R_3_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_real_crust2+bb/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h6>Outlook and Work in Progress</h6>
+
+                <ul style="font-size: 75%">
+                    <li>Validate workflow with more synthetic tests cases and applications<br><span class="fragment fade-in-then-out annot"> ➞ complex asperities, complex source geometries, location uncertainty</span></li>
+                    <li>Speed up the process (goal for TEW: 5 - 10 minutes)<br><span class="fragment fade-in-then-out annot"> ➞ multi-processing, remove redundant input models</span></li>
+                    <li>Handle areas with little a priori information available</li>
+                    <li>Apply IDS method<br><span class="fragment fade-in-then-out annot"> ➞ currently in progress</span></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Thank you for your attention!</h2>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="reveal/dist/reveal.js"></script>
+    <script src="reveal/plugin/notes/notes.js"></script>
+    <script src="reveal/plugin/markdown/markdown.js"></script>
+    <script src="reveal/plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        });
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>

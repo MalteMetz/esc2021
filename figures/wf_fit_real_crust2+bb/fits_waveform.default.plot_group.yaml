@@ -1,0 +1,248 @@
+--- !grond.PlotGroup
+name: fits_waveform
+section: fits
+title: Waveform fits for best model
+description: '
+
+  Plot showing observed and synthetic waveform (attributes) for the best fitting
+
+  model.
+
+
+  Best model''s waveform fits for all targets. Depending on the target
+
+  configurations different types of comparisons are possible: (i) time domain
+
+  waveform differences, (ii) amplitude spectra, (iii) envelopes, (iv) cross
+
+  correlation functions. Each waveform plot gives a number of details:
+
+
+  1) Target information (left side, from top to bottom) gives station name with
+
+  component, distance to source, azimuth of station with respect to source,
+
+  target weight, target misfit and starting time of the waveform relative to the
+
+  origin time.
+
+
+  2) The background gray area shows the applied taper function.
+
+
+  3) The waveforms shown are: the restituted and filtered observed trace without
+
+  tapering (light grey) and the same trace with tapering and processing (dark
+
+  gray), the synthetic trace (light red) and the filtered, tapered and (if
+
+  enabled) shifted and processed synthetic target trace (red). The traces are
+
+  scaled according to the target weight (small weight, small amplitude) and
+
+  normed relative to the maximum amplitude of the targets of the corresponding
+
+  normalisation family.
+
+
+  4) The bottom panel shows, depending on the type of comparison, sample-wise
+
+  residuals for time domain comparisons (red filled), spectra of observed and
+
+  synthetic traces for amplitude spectrum comparisons, or cross correlation
+
+  traces.
+
+
+  5) Colored boxes on the upper right show the relative weight of the target
+
+  within the entire dataset of the optimisation (top box, orange) and the
+
+  relative misfit contribution to the global misfit of the optimisation (bottom
+
+  box, red).
+
+'
+formats:
+- !grond.PNG {}
+variant: default
+feather_icon: activity
+size_cm: [7.4, 5.2]
+items:
+- !grond.PlotItem
+  name: fig_td.pacc_R_0_0
+  attributes:
+    targets: [td.pacc.KO.GMLD..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_1_0
+  attributes:
+    targets: [td.pacc.KO.KUSD..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_2_0
+  attributes:
+    targets: [td.pacc.TK.0911..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_3_0
+  attributes:
+    targets: [td.pacc.TK.0918..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_4_0
+  attributes:
+    targets: [td.pacc.TK.0920..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_5_0
+  attributes:
+    targets: [td.pacc.TK.3511..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_6_0
+  attributes:
+    targets: [td.pacc.TK.3512..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_7_0
+  attributes:
+    targets: [td.pacc.TK.3514..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_8_0
+  attributes:
+    targets: [td.pacc.TK.3517..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_9_0
+  attributes:
+    targets: [td.pacc.TK.3523..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_10_0
+  attributes:
+    targets: [td.pacc.TK.3524..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_11_0
+  attributes:
+    targets: [td.pacc.TK.3528..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_12_0
+  attributes:
+    targets: [td.pacc.TK.3533..R]
+- !grond.PlotItem
+  name: fig_td.pacc_R_13_0
+  attributes:
+    targets: [td.pacc.TK.3538..R]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_0_0
+  attributes:
+    targets: [td.pacc.KO.GMLD..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_1_0
+  attributes:
+    targets: [td.pacc.KO.KUSD..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_2_0
+  attributes:
+    targets: [td.pacc.TK.0911..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_3_0
+  attributes:
+    targets: [td.pacc.TK.0918..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_4_0
+  attributes:
+    targets: [td.pacc.TK.0920..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_5_0
+  attributes:
+    targets: [td.pacc.TK.3511..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_6_0
+  attributes:
+    targets: [td.pacc.TK.3512..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_7_0
+  attributes:
+    targets: [td.pacc.TK.3514..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_8_0
+  attributes:
+    targets: [td.pacc.TK.3517..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_9_0
+  attributes:
+    targets: [td.pacc.TK.3523..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_10_0
+  attributes:
+    targets: [td.pacc.TK.3524..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_11_0
+  attributes:
+    targets: [td.pacc.TK.3528..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_12_0
+  attributes:
+    targets: [td.pacc.TK.3533..Z]
+- !grond.PlotItem
+  name: fig_td.pacc_Z_13_0
+  attributes:
+    targets: [td.pacc.TK.3538..Z]
+- !grond.PlotItem
+  name: fig_td.pbb_R_0_0
+  attributes:
+    targets: [td.pbb.TU.AKHS..R]
+- !grond.PlotItem
+  name: fig_td.pbb_R_1_0
+  attributes:
+    targets: [td.pbb.TU.BUHA..R]
+- !grond.PlotItem
+  name: fig_td.pbb_R_2_0
+  attributes:
+    targets: [td.pbb.TU.ESEN..R]
+- !grond.PlotItem
+  name: fig_td.pbb_R_3_0
+  attributes:
+    targets: [td.pbb.TU.KIRA..R]
+- !grond.PlotItem
+  name: fig_td.pbb_R_4_0
+  attributes:
+    targets: [td.pbb.TU.MULA..R]
+- !grond.PlotItem
+  name: fig_td.pbb_Z_0_0
+  attributes:
+    targets: [td.pbb.TU.AKHS..Z]
+- !grond.PlotItem
+  name: fig_td.pbb_Z_1_0
+  attributes:
+    targets: [td.pbb.TU.BUHA..Z]
+- !grond.PlotItem
+  name: fig_td.pbb_Z_2_0
+  attributes:
+    targets: [td.pbb.TU.ESEN..Z]
+- !grond.PlotItem
+  name: fig_td.pbb_Z_3_0
+  attributes:
+    targets: [td.pbb.TU.KIRA..Z]
+- !grond.PlotItem
+  name: fig_td.pbb_Z_4_0
+  attributes:
+    targets: [td.pbb.TU.MULA..Z]
+- !grond.PlotItem
+  name: fig_td.pgnssr_R_0_0
+  attributes:
+    targets: [td.pgnssr.NO.094A..R]
+- !grond.PlotItem
+  name: fig_td.pgnssr_R_1_0
+  attributes:
+    targets: [td.pgnssr.NO.IKAR..R]
+- !grond.PlotItem
+  name: fig_td.pgnssr_R_2_0
+  attributes:
+    targets: [td.pgnssr.NO.IKAU..R]
+- !grond.PlotItem
+  name: fig_td.pgnssr_R_3_0
+  attributes:
+    targets: [td.pgnssr.NO.SAMU..R]
+- !grond.PlotItem
+  name: fig_td.pgnssz_Z_0_0
+  attributes:
+    targets: [td.pgnssz.NO.IKAR..Z]
+- !grond.PlotItem
+  name: fig_td.pgnssz_Z_1_0
+  attributes:
+    targets: [td.pgnssz.NO.IKAU..Z]
+attributes: {}

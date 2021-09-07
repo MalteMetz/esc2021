@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Fast PDR Summary</title>
+
+    <link rel="stylesheet" href="reveal/dist/reset.css">
+    <link rel="stylesheet" href="reveal/dist/reveal.css">
+    <link rel="stylesheet" href="theme/pyrocko.css" id="theme">
+    <!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="theme/highlight/gruvbox-light.css" id="highlight-theme">
+</head>
+<style>
+    .annot {
+        font-style: italic;
+        color: #ffbbaa;
+        padding-left: 1em;
+    }
+
+    .links {
+        border-top: 1px solid #665544;
+        padding-top: 0.5em;
+        font-size: 70%;
+        color: #aaaa88;
+        margin-top: 2em;
+        width: 100%;
+    }
+
+    .links li {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 1em;
+    }
+
+    .links a {
+        color: #aaaa88;
+    }
+
+    .editor {
+        margin: 1em;
+        border: 1px solid #665544;
+        border-radius: 0.2em;
+        background-color: #333322;
+    }
+
+    code.inline {
+        font-size: 80%;
+        background-color: #444435;
+        color: #ccccaa;
+    }
+
+    em {
+        color: #ccaa33;
+    }
+
+    .small {
+        font-size: 70%;
+    }
+
+    div.fbox {
+        display: flex;
+        vertical-align: top;
+        justify-content: space-evenly;
+    }
+
+    div.fitem {
+        flex-grow: 1;
+    }
+
+    div.left {
+      left:-8.33%;
+      text-align: center;
+      float: left;
+      width:50%;
+      z-index:-10;
+    }
+
+    div.right {
+      left:31.25%;
+      top: 75px;
+      float: right;
+      text-align: center;
+      z-index:-10;
+      width:50%;
+    }
+</style>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h6>Test Include</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                    <div class="fitem">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Results as expected</td>
+                                    <td><p style="color: darkred;">&#10003;</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Generated and uploaded all plots</td>
+                                    <td><p style="color: darkred;">&#10003;</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Tackled open questions</td>
+                                    <td><p style="color: darkred;">&#10003;</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <ul style="font-size: 75%">
+                    <li></li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="reveal/dist/reveal.js"></script>
+    <script src="reveal/plugin/notes/notes.js"></script>
+    <script src="reveal/plugin/markdown/markdown.js"></script>
+    <script src="reveal/plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        });
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,2773 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Fast PDR Summary</title>
+
+    <link rel="stylesheet" href="reveal/dist/reset.css">
+    <link rel="stylesheet" href="reveal/dist/reveal.css">
+    <link rel="stylesheet" href="theme/pyrocko.css" id="theme">
+    <!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="theme/highlight/gruvbox-light.css" id="highlight-theme">
+</head>
+<style>
+    .annot {
+        font-style: italic;
+        color: #ffbbaa;
+        padding-left: 1em;
+    }
+
+    .links {
+        border-top: 1px solid #665544;
+        padding-top: 0.5em;
+        font-size: 70%;
+        color: #aaaa88;
+        margin-top: 2em;
+        width: 100%;
+    }
+
+    .links li {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 1em;
+    }
+
+    .links a {
+        color: #aaaa88;
+    }
+
+    .editor {
+        margin: 1em;
+        border: 1px solid #665544;
+        border-radius: 0.2em;
+        background-color: #333322;
+    }
+
+    code.inline {
+        font-size: 80%;
+        background-color: #444435;
+        color: #ccccaa;
+    }
+
+    em {
+        color: #ccaa33;
+    }
+
+    .small {
+        font-size: 70%;
+    }
+
+    div.fbox {
+        display: flex;
+        vertical-align: top;
+        justify-content: space-evenly;
+    }
+
+    div.fitem {
+        flex-grow: 1;
+    }
+
+    div.left {
+      left:-8.33%;
+      text-align: center;
+      float: left;
+      width:50%;
+      z-index:-10;
+    }
+
+    div.right {
+      left:31.25%;
+      top: 75px;
+      float: right;
+      text-align: center;
+      z-index:-10;
+      width:50%;
+    }
+</style>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <section>
+                    <h2>Tests and Results Fast PDR</h2>
+                    <p style="font-size:50%">Internal only</p>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Methods</h2>
+                </section>
+                
+                <section>
+                    <h6>Proposed Fast PDR Flow</h6>
+
+                    <img src="figures/methods/flow_fast_pdr.png" style="height: 10em;"/>
+                </section>
+
+            </section>
+
+            <section>
+                <section>
+                    <h2>Measures used</h2>
+                </section>
+
+                <section>
+                    <h6>Best model</h6>
+
+                    <p>is defined based on the waveform misfit. Best model has the smallest waveform misfit</p> 
+                </section>
+
+                <section>
+                    <h6>Error</h6>
+                    <p>measures the Least Square misfit between vertical surface displacement for input and best model <em>(e.g. Pietrzak, 2007; Gusman, 2019; Ulrich, 2019; Ho, 2021)</em> (based on potential tsunami energy)</p>
+
+                    \(E_{pot, tsu} = \oint \dfrac{1}{2} \cdot g \cdot \rho \cdot h^2\)
+
+                    <p class="annot" >➞ \(\sqrt{\sum{(\Delta u_{init} - \Delta u_{mod})^2}}\)</p>
+
+                </section>
+
+            </section>
+
+<!-- TSUMAPS -->
+            <section>
+                <section>
+                    <h2>Which number of input models from TSUMAPS is sufficient?</h2>
+                </section>
+
+                <section>
+                    <h6>Strategy</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Input</td>
+                                        <td>TSUMAPS FMS, Probs</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aim</td>
+                                        <td>Choose number of input models / minimum cumulative probability to be reached</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Strategy</td>
+                                        <td>Stats. of cum prob. (and its gradient), Stats. of angular distance?</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>TSUMAPS Grid</h6>
+                    <img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/tsumaps_grid.png">
+
+                    <ul style="font-size: 75%">
+                       <li>13645 data points</li>
+                       <li>20 km spacing in N and E</li>
+                       <li>Probabilities for a set of 144 different FMs </li> 
+                    </ul>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>Cumulative Prob</td>
+                                        <td>Cum. Prob. Gradient</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_cumprob.png"></td>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_probgrad.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <em style="font-size: 75%">What could be a good compromise between No of models and sufficient sampling? - Remove all points at mean and below</em>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>Cumulative Prob</td>
+                                        <td>Cum. Prob. Gradient</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_cumprob_above_mean.png"></td>
+                                        <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test_tsumaps/nmt_vs_probgrad_above_mean.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <em>after mean removal -> 7 initial models needed</em>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>N </td>
+                                        <td>Sparse</td>
+                                        <td>Dense</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="vertical-align: middle;">1</td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_1.png"></td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_1_dense.png"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: middle;">5</td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_5.png"></td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_5_dense.png"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: middle;">20</td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_20.png"></td>
+                                        <td><img style="margin:0; margin-bottom:0em; margin-right:0.3em; height: 5em;"src="./figures/test_tsumaps/map_grid_cumprob_n_20_dense.png"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <em style="font-size: 75%"></em>
+                </section>
+            </section>
+
+
+
+            <section>
+                <section id="sparse_justification">
+                    <h2>Justify sparse grid search</h2>
+                </section>
+
+                <section>
+                    <h6>Idea</h6>
+                    <em>show misfit compared to inital model for high (1.0 Hz) and low f data (0.1 Hz) fitting for different sets of parameters</em>
+
+                    <p>important parameter:
+                    <ul>
+                        <li>strike \(\phi\), dip \(\delta\), rake \(\lambda\)</li>
+                        <li>nucleation x, nucleation y</li>
+                        <li>traction \(\Delta \sigma\) or slip \(|\Delta u|\)</li>
+                    </ul></p>
+                </section>
+
+                <section>
+                     <h6>Search ranges to start</h6>
+
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>Parameter</th>
+                                    <th><a href="#/pair_test_sparse">Range sparse</a></th>
+                                    <th><a href="#/pair_test_dense">Range dense</a></th>
+                                    <th>Reference source</th>
+                                </tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>strike \(\phi\)</td>
+                                        <td>-180:180:15</td>
+                                        <td>-160:-60:5</td>
+                                        <td>-105.37</td>
+                                    </tr>
+                                    <tr>
+                                        <td>dip \(\delta\)</td>
+                                        <td>0:90:15</td>
+                                        <td>30:70:5</td>
+                                        <td>42.92</td>
+                                    </tr>
+                                    <tr>
+                                        <td>rake \(\lambda\)</td>
+                                        <td>-180:180:15</td>
+                                        <td>-150:-80:5</td>
+                                        <td>-115.9</td>
+                                    </tr>
+                                    <tr>
+                                        <td>nucleation x</td>
+                                        <td>-1:1:0.1</td>
+                                        <td>-1:1:0.1</td>
+                                        <td>0.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>nucleation y</td>
+                                        <td>-1:1:0.1</td>
+                                        <td>-1:1:0.1</td>
+                                        <td>0.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>\(\Delta \sigma\)</td>
+                                        <td>\({10}^{(-3:2:1)} \cdot 10^6\)</td>
+                                        <td>\({10}^{(-1:1:0.1)} \cdot 10^6\)</td>
+                                        <td>\(2.655  \cdot 10^6\)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="pair_test_sparse">
+                    <h2>Sparse sampling</h2>
+                </section>
+
+<!-- SPARSE STRIKE -->
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_slip_strike_fmax1.0_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td></td>
+                                    <td><em>smoother, side max. for adjacent NP</em></td>
+                                    <td><em>smoother, broader max.</em></td>
+                                    <td><em>No real difference</em></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax1.0_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td></td>
+                                    <td><em>smoother, side maximum for adjacent NP</em></td>
+                                    <td><em>smoother, not too good resolution on nucly</em></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE DIP -->
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td></td>
+                                    <td><em>smoother, broader max.</em></td>
+                                    <td><em>smoother, similar sized max.</em></td>
+                                    <td><em>no gain</em></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax1.0_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td></td>
+                                    <td><em>resolution loss for nuclx</em></td>
+                                    <td><em>resolution loss for nucly</em></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE RAKE -->
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE SLIP TRACTION -->
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_slip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_rake_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE NUCLEATION X -->
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Slip/Traction</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE NUCLEATION Y -->
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="pair_test_dense">
+                    <h2>Dense sampling</h2>
+                </section>
+
+<!-- DENSE STRIKE -->
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_slip_strike_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE DIP -->
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE RAKE -->
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE SLIP TRACTION -->
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_slip_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_rake_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE NUCLEATION X -->
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Slip/Traction</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE NUCLEATION Y -->
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>\(f_{max}\) [Hz]</th>
+                                    <th>Nucleation X</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">0.1</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">1.0</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax1.0_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 6em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax1.0_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="pair_test_summary">
+                    <h6>Summary Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Results as expected</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generated and uploaded all plots</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tackled open questions</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p align="justify">lower f:</p>
+                    
+                    <ul style="font-size: 75%">
+                        <li>increases smoothness of misfit function</li>
+                        <li>decreases resolution (esp. nuclY, dip vs nuclX)</li>
+                        <li>does not loose the major misfit minimum</li>
+                        <li><em>Lower f of 0.1 performs well enough</em></li>
+                    </ul>
+                </section>
+            </section>
+
+<!-- PAIR TEST TIME + FREQUENCY DOMAIN -->
+            <section>
+                <section id="sparse_justification_+freq">
+                    <h2>Check grid search using also/solely frequency domain and BB stations</h2>
+                </section>
+
+                <section>
+                    <h6>Idea</h6>
+                    <em>Compare different domain fittings vs time domain fitting only for SM and HRGNSS data or SM, HRGNSS and BB data</em>
+
+                    settings and parameter as in <a href="#/sparse_justification">Justify Grid</a>
+                </section>
+
+
+                <section id="pair_test_+freq_sparse">
+                    <h2>Sparse sampling</h2>
+                </section>
+
+<!-- SPARSE STRIKE -->
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE DIP -->
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE RAKE -->
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + bb</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE SLIP TRACTION -->
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE NUCLEATION X -->
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Slip/Traction</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- SPARSE NUCLEATION Y -->
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/sparse_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="pair_test_+freq_dense">
+                    <h2>Dense sampling</h2>
+                </section>
+
+<!-- DENSE STRIKE -->
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>strike vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE DIP -->
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Rake</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>dip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE RAKE -->
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + bb</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_rake_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>rake vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE SLIP TRACTION -->
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_slip_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_rake_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>slip vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE NUCLEATION X -->
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_nucleation_x_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation x vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Slip/Traction</th>
+                                    <th>Nucleation Y</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_slip_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- DENSE NUCLEATION Y -->
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Strike</th>
+                                    <th>Dip</th>
+                                    <th>Rake</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_strike_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_dip_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_rake_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>nucleation y vs</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>domain</th>
+                                    <th>Nucleation X</th>
+                                    <th>Slip/Traction</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+freq/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">freq</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_freq/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                                <tbody>
+                                    <td style="vertical-align: middle;">time + BB</td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_x_nucleation_y_fmax0.1_misfit.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 4em;"src="./figures/pair_test_+bb/dense_nucleation_y_slip_fmax0.1_misfit.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="pair_test_+freq_summary">
+                    <h6>Summary Results 1</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Results as expected</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generated and uploaded all plots</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tackled open questions</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>Summary Results 2</h6>
+                     <ul style="font-size: 75%">
+                        <li>no significant difference in misfit function shape between the runs</li>
+                        <li>time domain fitting only is faster</li>
+                        <li>time domain fitting for SM, HRGNSS and BB (100 - 200 km) leads to mostly best results (improves resolution of nucleation y, strike, dip, rake)
+                        <li><em>time domain fitting solely is enough</em></li>
+                    </ul>
+                </section>
+            </section>
+
+
+<!-- TEST0 - CONSISTENCY -->
+            <section>
+                <section id="test0">
+                    <h2>Best condition / consistency test <p style="font-style: italic;">Test0</p></h2></h2>
+                </section>
+
+                <section>
+                    <h6>Strategy</h6>
+
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Input</td>
+                                        <td>AK135, NuclX 0.0, Noise 0.0, Asp. all, <b>SM, HRGNSS - +BB</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aim</td>
+                                        <td>Check for consistency of method</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Strategy</td>
+                                        <td>Blaser with no error, no extra fault upscaling, input model is included in tested models</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Results - HR GNSS & SM</h2>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+                    <ul>
+                        <li>\(t_{run} = 1400 s = 23 min 2s\)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h6>Input vs best model</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>Input</th>
+                                    <th>Best model</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test0/map_input.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test0/map_ensemble_best.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section>
+                <h6></h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                                <!-- <th>BUHA <span style="font-size: 50%">(BB)</span></th> -->
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">Z</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                    <!-- <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td> -->
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">R</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                    <!-- <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+
+                <section>
+                    <h6>Parameter results: strike, dip, rake</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_strike.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_dip.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_rake.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Best models have orientations equal to initial value</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: length, width, slip</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_length.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_width.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_slip.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Slip is essential, length and width not as significant</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: Nucleation</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_nucleation_x.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/misfit_vs_nucleation_y.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Errors are not effected (as just measuring final static dislocation). Data misfit is best for true nucleation, but also reasonable small for other origins</p>
+                </section>
+
+                <section>
+                    <h6>Error vs misfit</h6>
+                    <img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0/error_vs_misfit.png">
+                    <br>
+                    <p style="font-size: 75%;">Difference in error and misfit due to rounding issues of northing and easting</p>
+                </section>
+
+                <section>
+                    <h2>Results - HR GNSS, SM and BB</h2>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+                    <ul>
+                        <li>\(t_{run} = ? s\)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h6>Input vs best model</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>Input</th>
+                                    <th>Best model</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test0_+bb/map_input.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 10em;"src="./figures/test0_+bb/map_ensemble_best.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                <h6>Waveform fit</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                                <th>BUHA <span style="font-size: 50%">(BB)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">Z</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">R</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+                <section>
+                    <h6>Parameter results: strike, dip, rake</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_strike.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_dip.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_rake.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Best models have orientations equal to initial value</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: length, width, slip</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_length.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_width.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_slip.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Slip is essential, length and width not as significant</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: Nucleation</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_nucleation_x.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/misfit_vs_nucleation_y.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Errors are not effected (as just measuring final static dislocation). Data misfit is best for true nucleation, but also reasonable small for other origins</p>
+                </section>
+
+                <section>
+                    <h6>Error vs misfit</h6>
+                    <img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test0_+bb/error_vs_misfit.png">
+                    <br>
+                    <p style="font-size: 75%;">Difference in error and misfit due to rounding issues of northing and easting</p>
+                </section>
+
+                <section id="test0_summary">
+                    <h6>Summary Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Results as expected</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generated and uploaded all plots</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tackled open questions</td>
+                                        <td><p style="color: darkgreen;">&#10003;</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ul style="font-size: 75%">
+                        <li>Models equal to input show the smallest data misfit and smallest error</li>
+                        <li>Data misfits for models with wrong oriention are significantly smaller</li>
+                        <li>Nucleation_y is poorly resolved by the data</li>
+                        <li>No significant differences between HRGNSS, SM and HRGNSS, SM & BB runs</li>
+                    </ul>
+                </section>
+            </section>
+
+<!-- TEST1 RANDOM NOISE -->
+
+            <section>
+                <section id="test1">
+                    <h2>Random Noise Test <br><p style="font-style: italic;">Test1</p></h2>
+                </section>
+
+                <section>
+                    <h6>Strategy</h6>
+
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Input</td>
+                                        <td>AK135, NuclX 0.0, Noise <b>0.0/0.1</b>, Asp. all</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aim</td>
+                                        <td>Check stability of method in occurence of white noise</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Strategy</td>
+                                        <td>Blaser with no error, no extra fault upscaling, input model is <b>not</b> included in tested models</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+
+                    <ul>
+                        <li>\(t_{run} = XX s = XX min XXs\)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>SM, HRGNSS stations only</h2>
+                </section>
+
+                <section>
+                    <h6>Input vs best models</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>Input</th>
+                                    <th>Best 0% noise</th>
+                                    <th>Best 10% noise</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_-mt/map_input.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_-mt/map_ensemble_best_0.0.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_-mt/map_ensemble_best_0.1.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                <h6>Waveform fit - Z</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">0% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">10% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+                <section>
+                <h6>Waveform fit - R</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">0% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">10% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+                <section>
+                    <h6>Parameter results: strike, dip, rake</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_strike.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_dip.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_rake.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Best models have ??</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: length, width, slip</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_length.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_width.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_slip.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">??</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: Nucleation</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_nucleation_x.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/misfit_vs_nucleation_y.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">??</p>
+                </section>
+
+                <section>
+                    <h6>Error vs misfit</h6>
+                    <img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_-mt/error_vs_misfit.png">
+                    <br>
+                    <p style="font-size: 75%;">??</p>
+                </section>
+
+
+                <section>
+                    <h2>BB, SM and HRGNSS stations</h2>
+                </section>
+
+                <section>
+                    <h6>Input vs best models</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                 <thead><tr>
+                                    <th>Input</th>
+                                    <th>Best 0% noise</th>
+                                    <th>Best 10% noise</th>
+                                </tr></thead>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_+bb_-mt/map_input.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_+bb_-mt/map_ensemble_best_0.0.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.3em; height: 7em;"src="./figures/test1_+bb_-mt/map_ensemble_best_0.1.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                <h6>Waveform fit - Z</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                                <th>BUHA <span style="font-size: 50%">(BB)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">0% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">10% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_Z_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_Z_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pbb_Z_1_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+                <section>
+                <h6>Waveform fit - R</h6>
+                <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%; float: right;">
+                    <div class="fitem">
+                        <table>
+                             <thead><tr>
+                                <th></th>
+                                <th>IKAR <span style="font-size: 50%">(HRGNSS)</span></th>
+                                <th>TK.3523 <span style="font-size: 50%">(SM)</span></th>
+                                <th>BUHA <span style="font-size: 50%">(BB)</span></th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">0% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.0_+bb-mt/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">10% noise</td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.p_R_1_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pacc_R_9_0.d100.png"></td>
+                                    <td><img style="margin:0; margin-bottom: 0em; margin-right:0em; height: 5em;"src="./figures/wf_fit_noise0.1_+bb-mt/fits_waveform.default.fig_td.pbb_R_1_0.d100.png"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                    
+                </section>
+
+                <section>
+                    <h6>Parameter results: strike, dip, rake</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_strike.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_dip.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_rake.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">Best models have ??</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: length, width, slip</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_length.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_width.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_slip.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">??</p>
+                </section>
+
+                <section>
+                    <h6>Parameter results: Nucleation</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_nucleation_x.png"></td>
+                                    <td><img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/misfit_vs_nucleation_y.png"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 75%">??</p>
+                </section>
+
+                <section>
+                    <h6>Error vs misfit</h6>
+                    <img style="margin:0; margin-bottom:-0.6em; margin-right:0.0em; height: 7em;"src="./figures/test1_+bb_-mt/error_vs_misfit.png">
+                    <br>
+                    <p style="font-size: 75%;">??</p>
+                </section>
+
+                <section id="test1_summary">
+                    <h6>Summary Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Results as expected</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generated and uploaded all plots</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tackled open questions</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ul style="font-size: 75%">
+                        <li><em>REDO for time domain + BB?</em></li>
+                        <li><em>REDO without initial model as input model</em></li>
+                    </ul>
+                </section>
+            </section>
+
+<!-- TEST2 - CORRELATED NOISE -->
+            <section>
+                <section id="test2">
+                    <h2>Correlated Noise Test <br><p style="font-style: italic;">Test2</p></h2>
+                </section>
+
+                <section>
+                    <h6>Strategy</h6>
+
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Input</td>
+                                        <td>AK135, NuclX 0.0, Noise <b>0.0/0.1</b>, Asp. all</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aim</td>
+                                        <td>Check stability of method in occurence of correlated noise</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Strategy</td>
+                                        <td>Blaser with no error, no extra fault upscaling, input model is not included in tested models, Compare to <b>AK135</b> estimate to <b>CRUST2 C4</b> estimate</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h6>Results</h6>
+
+                    <ul>
+                        <li>\(t_{run} = XX s = XX min XXs\)</li>
+                    </ul>
+                </section>
+
+                <section id="test2_summary">
+                    <h6>Summary Results</h6>
+                    <div class="fbox" style="vertical-align: top; width: 100%; font-size: 75%;">
+                        <div class="fitem">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Results as expected</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generated and uploaded all plots</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tackled open questions</td>
+                                        <td><p style="color: darkred;">&#10003;</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+<!--                     <ul style="font-size: 75%">
+                        <li><em>REDO for time domain + BB?</em></li>
+                        <li><em>REDO without initial model as input model</em></li>
+                    </ul> -->
+                </section>
+
+            </section>
+
+<!-- TODOS -->
+            <section>
+                <section>
+                    <h2>Current ToDo</h2>
+                    <ul>
+                        <li>Check <a href="#/test0_summary">test0</a> and <a href="#/test1_summary">test1</a> results and ToDos - new domain settings/plots</li>
+                        <li>CHECK TRACTION VALUES (REDUCE)</li>
+                        <li>Move Grond functions into ewrica (simplifiy grond running scripts) perhaps based on grond config <em>ewrica.io.grond</em> </li>
+                    </ul>
+                </section>
+            </section>
+
+
+        </div>
+    </div>
+
+    <script src="reveal/dist/reveal.js"></script>
+    <script src="reveal/plugin/notes/notes.js"></script>
+    <script src="reveal/plugin/markdown/markdown.js"></script>
+    <script src="reveal/plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        });
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>
